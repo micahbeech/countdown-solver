@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "countdown-solver"
+    }
+  },
+  "defaultProject": "countdown-solver",
+  "cli": {
+    "analytics": "abd079f9-e9c2-4bca-b896-fc1a19c806bc"
+  }
 }
