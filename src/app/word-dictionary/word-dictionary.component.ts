@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import DictionaryJson from '../../assets/dictionary_alpha.json'
 
 @Component({
@@ -22,9 +22,11 @@ export class WordDictionaryComponent implements OnInit {
     this.solve();
   }
 
+  /**
+   * Sets solution to all valid english words that can be obtained from letters.
+   */
   solve() {
     var permutations = this.getPermutations();
-    console.log(permutations);
 
     var filteredWords: String[] = [];
 
@@ -34,15 +36,17 @@ export class WordDictionaryComponent implements OnInit {
         filteredWords.push(str);
       }
     });
-    console.log(filteredWords);
 
     filteredWords.sort((a, b) => b.length - a.length);
-    console.log(filteredWords);
 
     this.solution = filteredWords.slice(0, 1000);
-    console.log(this.solution);
   }
 
+  /**
+   * Computes all permutations of all lengths of the current letters.
+   * 
+   * @return {String[]} All permutations of all lengths of the current letters (except the empty string).
+   */
   getPermutations(): String[] {
     var combinations = this.combine(this.letters, "", 0);
     var permutations: String[] = [];
@@ -52,33 +56,53 @@ export class WordDictionaryComponent implements OnInit {
     return permutations;
   }
 
-  combine(instr: String, outstr: String, index: number): String[] {
+  /**
+   * Compute all combinations of a string.
+   * 
+   * @param {String} string1 The string to compute combinations of.
+   * @param {String} string2 The current combination.
+   * @param {number} index The location to begin within string1.
+   * @return {String[]} All combinations of the string. Note: this does not remove duplicates.
+   */
+  combine(string1: String, string2: String, index: number): String[] {
     var combinations: String[] = [];
-    for (var i = index; i < instr.length; i++) {
-        outstr += instr.charAt(i);
-        combinations.push(outstr);
-        combinations = combinations.concat(this.combine(instr, outstr, i+1));
-        outstr = outstr.slice(0,-1);
+
+    for (var i = index; i < string1.length; i++) {
+
+        string2 += string1.charAt(i);
+        combinations.push(string2);
+        combinations = combinations.concat(this.combine(string1, string2, i+1));
+        string2 = string2.slice(0,-1);
+
     }
-    return combinations
+
+    return combinations;
   }
 
+  /**
+   * Compute all permutations of a string.
+   * 
+   * @param {String} string The string to compute permutations of.
+   * @return {String[]} All permutations of the string. This does not compute sub-permutations.
+   */
   permute(string: String): String[] {
-    if (string.length < 2) return [string]; // This is our break condition
+    if (string.length < 2) return [string];
   
-    var permutations = []; // This array will hold our permutations
+    var permutations: String[] = [];
+
     for (var i = 0; i < string.length; i++) {
       var char = string[i];
   
-      // Cause we don't want any duplicates:
-      if (string.indexOf(char) != i) // if char was used already
-        continue; // skip it this time
+      if (string.indexOf(char) != i) continue;
   
-      var remainingString = string.slice(0, i) + string.slice(i + 1, string.length); //Note: you can concat Strings via '+' in JS
+      var remainingString = string.slice(0, i) + string.slice(i + 1, string.length);
   
-      for (var subPermutation of this.permute(remainingString))
-        permutations.push(char + subPermutation)
+      for (var subPermutation of this.permute(remainingString)) {
+        permutations.push(char + subPermutation);
+      }
+
     }
+
     return permutations;
   }
 

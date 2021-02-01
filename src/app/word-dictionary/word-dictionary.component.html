@@ -1,23 +1,11 @@
-
-<!-- <span *ngFor="let description of descriptions">
-    <div>
-        {{description}}
-    </div>
-</span> -->
-
 <div>
+  <div>
     <input [(ngModel)]="letters" placeholder="letters"/>
     <button (click)="onClickSolve()">Solve</button>
+  </div>
+  <div>
+    <span *ngFor="let word of solution">
+      <div>{{word}}</div>
+    </span>
+  </div>
 </div>
-
-<span *ngFor="let word of solution">
-    <div>
-        {{word}}
-    </div>
-</span>
-
-<!-- <table>
-    <tr *ngFor="let word of filteredWords">
-      <td>{{ word }}</td>
-    </tr>
-</table> -->
